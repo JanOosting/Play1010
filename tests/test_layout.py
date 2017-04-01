@@ -45,6 +45,16 @@ class TestPieceSetup(unittest.TestCase):
         self.assertEqual(piece.height, 2)
         self.assertEqual(piece.width, 3)
 
+    def test_all_pieces(self):
+        self.assertEqual(len(board.allPieces), 19)
+
+    def test_freqency_parameter(self):
+        piece = board.Piece(((0,0),))
+        self.assertEqual(piece.frequency, 5)  # default frequency ~ 5 %
+        piece = board.Piece(((0,0),), 3)
+        self.assertEqual(piece.frequency, 3)
+
+
 
 class TestPutPiece(unittest.TestCase):
 

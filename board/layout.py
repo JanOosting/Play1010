@@ -19,7 +19,7 @@ class Board:
 
     def __init__(self):
         self.size = 10
-        self.board = numpy.zeros((self.size, self.size))
+        self.board = numpy.zeros((self.size, self.size), numpy.int32)
         self.score = 0
 
     def clearrow(self, row):
@@ -70,10 +70,11 @@ class Board:
 
 class Piece:
 
-    def __init__(self, blocks):
+    def __init__(self, blocks, frequency=5):
         self.blocks = blocks
         self.width = 1
         self.height = 1
+        self.frequency = frequency
         if not isinstance(blocks, tuple):
             raise BoardError
         if len(blocks) < 1:
@@ -86,23 +87,23 @@ class Piece:
             self.height = max(self.height, block[0] + 1)
             self.width = max(self.width, block[1] + 1)
 
-allPieces = [Piece(((0, 0),)),
-             Piece(((0, 0), (1, 0))),
-             Piece(((0, 0), (0, 1))),
-             Piece(((0, 0), (1, 0), (2, 0))),
-             Piece(((0, 0), (0, 1), (0, 2))),
-             Piece(((0, 0), (1, 0), (2, 0), (3, 0))),  # 5
-             Piece(((0, 0), (0, 1), (0, 2), (0, 3))),
-             Piece(((0, 0), (1, 0), (2, 0), (3, 0), (4, 0))),
-             Piece(((0, 0), (0, 1), (0, 2), (0, 3), (0, 4))),
-             Piece(((0, 0), (1, 0), (0, 1), (1, 1))),
-             Piece(((0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1), (0, 2), (1, 2), (2, 2))),  # 10
-             Piece(((1, 0), (0, 1), (1, 1))),
-             Piece(((0, 0), (0, 1), (1, 1))),
-             Piece(((0, 0), (1, 0), (1, 1))),
-             Piece(((0, 0), (1, 0), (0, 1))),
-             Piece(((0, 0), (1, 0), (2, 0), (0, 1), (0, 2))), # 15
-             Piece(((0, 0), (1, 0), (2, 0), (2, 1), (2, 2))),
-             Piece(((0, 0), (0, 1), (0, 2), (1, 2), (2, 2))),
-             Piece(((2, 0), (2, 1), (0, 2), (1, 2), (2, 2))),
+allPieces = [Piece(((0, 0),), 5),
+             Piece(((0, 0), (1, 0)), 8),
+             Piece(((0, 0), (0, 1)), 8),
+             Piece(((0, 0), (1, 0), (2, 0)), 7),
+             Piece(((0, 0), (0, 1), (0, 2)), 7),
+             Piece(((0, 0), (1, 0), (2, 0), (3, 0)), 6),  # 5
+             Piece(((0, 0), (0, 1), (0, 2), (0, 3)), 6),
+             Piece(((0, 0), (1, 0), (2, 0), (3, 0), (4, 0)), 5),
+             Piece(((0, 0), (0, 1), (0, 2), (0, 3), (0, 4)), 5),
+             Piece(((0, 0), (1, 0), (0, 1), (1, 1)), 15),
+             Piece(((0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1), (0, 2), (1, 2), (2, 2)), 5),  # 10
+             Piece(((1, 0), (0, 1), (1, 1)), 4),
+             Piece(((0, 0), (0, 1), (1, 1)), 4),
+             Piece(((0, 0), (1, 0), (1, 1)), 4),
+             Piece(((0, 0), (1, 0), (0, 1)), 4),
+             Piece(((0, 0), (1, 0), (2, 0), (0, 1), (0, 2)), 2),  # 15
+             Piece(((0, 0), (1, 0), (2, 0), (2, 1), (2, 2)), 2),
+             Piece(((0, 0), (0, 1), (0, 2), (1, 2), (2, 2)), 2),
+             Piece(((2, 0), (2, 1), (0, 2), (1, 2), (2, 2)), 2),
              ]

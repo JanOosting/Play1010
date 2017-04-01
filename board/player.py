@@ -1,7 +1,16 @@
 import layout
+import random
+import numpy
 from copy import deepcopy
 
+
 class Player:
+
+    def __init__(self):
+        self.piecefrequency = []
+        for piece in xrange(len(layout.allPieces)):
+            for i in xrange(layout.allPieces[piece].frequency):
+                self.piecefrequency.append(piece)
 
     def testpiece(self, brd, piece, row, col):
         test_brd = deepcopy(brd)
@@ -20,12 +29,18 @@ class Player:
         allpossible = brd.validlocations(piece)
         result = (-1, -1)
         maxscore = 0
+        boardscore = brd.score
+        boardboard = numpy.copy(brd.board)
         for position in allpossible:
-            test_brd = deepcopy(brd)
-            test_brd.placepiece(piece, position[0], position[1])
-            if self.totalavailable(test_brd) > maxscore:
+            brd.score = boardscore
+            brd.board = numpy.copy(boardboard)
+            brd.placepiece(piece, position[0], position[1])
+            if self.totalavailable(brd) > maxscore:
                 result = position
-                maxscore = self.totalavailable(test_brd)
+                maxscore = self.totalavailable(brd)
+        brd.score = boardscore
+        brd.board = numpy.copy(boardboard)
         return result
 
-
+    def getrandompiece(self):
+        return layout.allPieces[random.choice(self.piecefrequency)]
