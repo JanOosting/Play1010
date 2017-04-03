@@ -1,6 +1,7 @@
 import sys
 import board
 import time
+import random
 
 
 def main():
@@ -11,9 +12,8 @@ def main():
     turncount = 0
     t0 = time.time()
     while True:
-        piece = plr.getrandompiece()
-        position = plr.getmaxscore(brd, piece)
-        if position[0] == -1:
+        moves = plr.getmaxscoreturn(brd, (plr.getrandompiece(), plr.getrandompiece(), plr.getrandompiece()))
+        if isinstance(moves, int):
             maxscore = max(maxscore, brd.score)
             print brd.score, turncount, int(time.time() - t0), maxscore
             # print brd.board
@@ -22,7 +22,10 @@ def main():
             t0 = time.time()
         else:
             turncount += 1
-            brd.placepiece(piece, position[0], position[1])
+            # print turncount, brd.score
+            brd.placepiece(moves[0][0], moves[1][0], moves[1][1])
+            brd.placepiece(moves[0][1], moves[2][0], moves[2][1])
+            brd.placepiece(moves[0][2], moves[3][0], moves[3][1])
 
 if __name__ == '__main__':
     sys.exit(main())

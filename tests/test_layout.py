@@ -49,11 +49,10 @@ class TestPieceSetup(unittest.TestCase):
         self.assertEqual(len(board.allPieces), 19)
 
     def test_freqency_parameter(self):
-        piece = board.Piece(((0,0),))
+        piece = board.Piece(((0, 0),))
         self.assertEqual(piece.frequency, 5)  # default frequency ~ 5 %
-        piece = board.Piece(((0,0),), 3)
+        piece = board.Piece(((0, 0),), 3)
         self.assertEqual(piece.frequency, 3)
-
 
 
 class TestPutPiece(unittest.TestCase):
@@ -63,12 +62,12 @@ class TestPutPiece(unittest.TestCase):
         brd = board.Board()
 
         brd.placepiece(piece, 0, 0)
-        self.assertEqual(brd.board[0][0], 1, 'topblock')
-        self.assertEqual(brd.board[1][0], 1, 'bottomblock')
+        self.assertEqual(brd.board[0][0], 5, 'topblock')
+        self.assertEqual(brd.board[1][0], 5, 'bottomblock')
 
         brd.placepiece(piece, 8, 9)
-        self.assertEqual(brd.board[8][9], 1, 'topblock')
-        self.assertEqual(brd.board[9][9], 1, 'bottomblock')
+        self.assertEqual(brd.board[8][9], 5, 'topblock')
+        self.assertEqual(brd.board[9][9], 5, 'bottomblock')
 
         with self.assertRaises(board.BoardError):  # outside
             brd.placepiece(piece, 9, 4)
@@ -96,14 +95,14 @@ class TestPutPiece(unittest.TestCase):
         brd.placepiece(piece, 2, 0)
         brd.placepiece(piece, 4, 0)
         brd.placepiece(piece, 6, 0)
-        self.assertEqual(brd.board[0][0], 1)
-        self.assertEqual(brd.board[1][0], 1)
-        self.assertEqual(brd.board[2][0], 1)
-        self.assertEqual(brd.board[3][0], 1)
-        self.assertEqual(brd.board[4][0], 1)
-        self.assertEqual(brd.board[5][0], 1)
-        self.assertEqual(brd.board[6][0], 1)
-        self.assertEqual(brd.board[7][0], 1)
+        self.assertEqual(brd.board[0][0], 5)
+        self.assertEqual(brd.board[1][0], 5)
+        self.assertEqual(brd.board[2][0], 5)
+        self.assertEqual(brd.board[3][0], 5)
+        self.assertEqual(brd.board[4][0], 5)
+        self.assertEqual(brd.board[5][0], 5)
+        self.assertEqual(brd.board[6][0], 5)
+        self.assertEqual(brd.board[7][0], 5)
         self.assertEqual(brd.board[8][0], 0)
         self.assertEqual(brd.board[9][0], 0)
         brd.placepiece(piece, 8, 0)
@@ -136,6 +135,12 @@ class TestPutPiece(unittest.TestCase):
         brd.placepiece(piece, 0, 0)  # Can do it again
         brd.placepiece(piece, 2, 0)  # place on cleared column
         brd.placepiece(piece, 0, 6)  # place on row
+
+    def test_scorepiece_empty_board(self):
+        brd = board.Board()
+        piece = board.Piece(((0, 0), (1, 0), (0, 1), (1, 1)))
+        self.assertEqual(brd.scorepiece(piece, 0, 0), -8)
+        self.assertEqual(brd.scorepiece(piece, 2, 3), -18)
 
 
 class TestScoring(unittest.TestCase):
@@ -213,3 +218,26 @@ class TestMoves(unittest.TestCase):
         self.assertEqual(len(locations), 69)
         locations = brd.validlocations(board.allPieces[10])
         self.assertEqual(len(locations), 43)
+
+    def test_all_available_locations(self):
+        brd = board.Board()
+        self.assertEqual(brd.totalavailable(), 1425)
+
+        brd.placepiece(board.allPieces[9], 0, 0)
+        self.assertEqual(brd.totalavailable(), 1354)
+
+    def test_maxgapperline(self):
+        brd = board.Board()
+        self.assertEqual(brd.maxgapperline(), 200)
+
+        brd.placepiece(board.allPieces[9], 3, 4)
+        self.assertEqual(brd.maxgapperline(), 178)
+
+    def test_availablelocationssorted_emptyboard(self):
+        brd = board.Board()
+        locations = brd.validlocationssorted(board.allPieces[0])
+        self.assertEqual(len(locations), 100)
+        locations = brd.validlocationssorted(board.allPieces[1])
+        self.assertEqual(len(locations), 90)
+        locations = brd.validlocationssorted(board.allPieces[10])
+        self.assertEqual(len(locations), 64)

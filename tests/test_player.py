@@ -16,14 +16,6 @@ class TestSingleMove(unittest.TestCase):
         score = plr.testpiece(brd, board.allPieces[2], 2, 0)
         self.assertEqual(score, 2)
 
-    def test_all_available_locations(self):
-        brd = board.Board()
-        plr = board.Player()
-        self.assertEqual(plr.totalavailable(brd), 1425)
-
-        brd.placepiece(board.allPieces[9], 0, 0)
-        self.assertEqual(plr.totalavailable(brd), 1354)
-
     def test_max_score_after_move(self):
         brd = board.Board()
         plr = board.Player()
